@@ -1,0 +1,91 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SectionHeader from '@components/SectionHeader.astro';
+import FeatureGrid from '@components/FeatureGrid.astro';
+import Breadcrumbs from '@components/Breadcrumbs.astro';
+import { Image } from 'astro:assets';
+import locationSpit from '@assets/images/location-02.jpg';
+import locationDaisies from '@assets/images/location-01.jpg';
+import beachSunset from '@assets/images/beach-09.jpg';
+import { site } from '@data/site';
+
+const breadcrumbJson = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Головна', item: site.url + '/' },
+    { '@type': 'ListItem', position: 2, name: 'Про клуб', item: site.url + '/about' },
+  ],
+};
+---
+<BaseLayout
+  title="Про Tiligul Club — пляжний клуб на Тилігульському лимані"
+  description="Tiligul Club: де знаходимось, як зародився проєкт, для кого це місце і що тут можна знайти, крім пляжу — глемпінг, кайт, кафе і простір."
+  path="/about"
+  jsonLd={[breadcrumbJson]}
+>
+  <Breadcrumbs items={[{ label: 'Головна', href: '/' }, { label: 'Про клуб' }]} />
+
+  <section class="section pt-10">
+    <div class="container-x grid lg:grid-cols-[1.05fr_1fr] gap-12 items-center">
+      <div>
+        <span class="eyebrow">Про клуб</span>
+        <h1 class="font-display text-4xl sm:text-5xl text-ink mt-3">Beach club на піщаній косі Тилігула</h1>
+        <p class="mt-5 text-ink-muted leading-relaxed">
+          Tiligul Club — це не просто пляж. Це місце на косі Тилігульського лиману, де поєднується
+          природа, спокійна вода, простір і сервіс. Сюди приїжджають за пляжним відпочинком,
+          за заходами сонця з тераси глемпа, за вітром на кайті — і за тим відчуттям,
+          яке буває лише на лимані.
+        </p>
+        <p class="mt-4 text-ink-muted leading-relaxed">
+          Клуб розташований біля села Українка, Миколаївська область. Дорога з Одеси —
+          приблизно півтори години, з Миколаєва — близько 50 хвилин. На території —
+          паркінг, душі, туалети, кафе, бар і пункт прокату.
+        </p>
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a href="/#beach" class="btn-primary">До бронювання пляжу</a>
+          <a href="/contacts" class="btn-secondary">Контакти</a>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <Image src={locationSpit} alt="Піщана коса Тилігульського лиману з дикими птахами" widths={[400, 720, 1080]} sizes="(min-width: 1024px) 320px, 45vw" class="rounded-3xl aspect-[3/4] object-cover w-full h-full" loading="eager" fetchpriority="high" />
+        <div class="space-y-3">
+          <Image src={locationDaisies} alt="Дикі ромашки на косі" widths={[400, 640]} sizes="(min-width: 1024px) 300px, 45vw" class="rounded-3xl aspect-[4/5] object-cover w-full h-full" loading="lazy" />
+          <Image src={beachSunset} alt="Захід сонця в долоні над лиманом" widths={[400, 640]} sizes="(min-width: 1024px) 300px, 45vw" class="rounded-3xl aspect-[4/3] object-cover w-full h-full" loading="lazy" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-x">
+      <SectionHeader
+        eyebrow="Для кого це місце"
+        title="Чотири різні дні в одному місці"
+        intro="Один день, один заїзд — а сценарії в кожного свої. Ми зробили все, щоб одне з них стало вашим."
+      />
+      <FeatureGrid />
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="container-x max-w-3xl">
+      <SectionHeader eyebrow="Лиман у деталях" title="Що варто знати про Тилігул" />
+      <div class="prose prose-lg max-w-none text-ink-soft">
+        <p>
+          Тилігульський лиман — солона затока в Миколаївській та Одеській областях,
+          відділена від Чорного моря піщаною косою. Вода тут спокійніша за відкрите море,
+          а температура влітку зазвичай вища.
+        </p>
+        <p>
+          Завдяки косі та особливостям рельєфу акваторія добре підходить і для родинного відпочинку,
+          і для кайтсерфінгу: великі простори рівної води і стабільні вітри.
+        </p>
+        <p>
+          Природа лиману — окрема цінність: очерет, степові трави, чайки на косі,
+          польові квіти і заходи сонця, які тут одні з кращих в регіоні.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,112 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SectionHeader from '@components/SectionHeader.astro';
+import Breadcrumbs from '@components/Breadcrumbs.astro';
+import ContactCards from '@components/ContactCards.astro';
+import { Image } from 'astro:assets';
+import { site } from '@data/site';
+
+import locationMap from '@assets/images/location-map.webp';
+
+const breadcrumbJson = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Головна', item: site.url + '/' },
+    { '@type': 'ListItem', position: 2, name: 'Контакти', item: site.url + '/contacts' },
+  ],
+};
+---
+<BaseLayout
+  title="Контакти Tiligul Club — телефони, маршрут, соцмережі"
+  description="Телефони для бронювання пляжу, глемпів і кайт-школи. Маршрут до клубу на Тилігульському лимані, соцмережі та email."
+  path="/contacts"
+  ogImage="/images/og/contacts.jpg"
+  jsonLd={[breadcrumbJson]}
+  showStickyCta={false}
+>
+  <Breadcrumbs items={[{ label: 'Головна', href: '/' }, { label: 'Контакти' }]} />
+
+  <section class="container-x pt-6 pb-4 sm:pt-10 sm:pb-6">
+    <SectionHeader
+      eyebrow="Контакти"
+      title="Зв’яжіться з нами"
+      intro="Окремі номери для пляжу, глемпів і кайт-школи — щоб ви одразу потрапили до того, хто відповідає за вашу заявку. Глемпи бронюються онлайн, кайт-школа — у Telegram."
+      as="h1"
+    />
+    <div class="mt-2">
+      <ContactCards />
+    </div>
+  </section>
+
+  <!-- Location: real satellite shot + drive-time facts -->
+  <section class="py-10 sm:py-14 bg-white">
+    <div class="container-x grid lg:grid-cols-[1.4fr_1fr] gap-8 lg:gap-12 items-start">
+      <!-- Satellite map (clickable, opens Google Maps in new tab) -->
+      <a
+        href={site.mapsUrl}
+        target="_blank"
+        rel="noopener"
+        class="block group rounded-3xl overflow-hidden shadow-card bg-sand-200 relative"
+        data-analytics="click_maps"
+        aria-label="Відкрити Tiligul Club у Google Maps"
+      >
+        <Image
+          src={locationMap}
+          alt="Супутниковий вид на Tiligul Club на піщаній косі Тилігульського лиману, біля села Українка"
+          widths={[640, 960, 1200]}
+          sizes="(min-width: 1024px) 720px, 90vw"
+          loading="eager"
+          fetchpriority="high"
+          class="w-full h-auto transition group-hover:scale-[1.02] duration-700"
+        />
+        <!-- Hover hint: "Open in Maps" -->
+        <span class="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full bg-white/95 px-4 py-2 text-sm font-medium text-teal-700 shadow-md">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1118 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+          Відкрити в Google Maps
+        </span>
+      </a>
+
+      <!-- Location facts -->
+      <div>
+        <span class="eyebrow">Як нас знайти</span>
+        <h2 class="font-display text-3xl sm:text-4xl text-ink mt-3">На піщаній косі Тилігульського лиману</h2>
+        <p class="mt-4 text-ink-muted leading-relaxed">
+          Біля села Українка, Миколаївська область. Координати GPS:
+          {site.geo.latitude.toFixed(4)}, {site.geo.longitude.toFixed(4)}.
+        </p>
+
+        <ul class="mt-6 space-y-3">
+          {[
+            { label: 'З Одеси', value: '~1 год 30 хв', detail: 'Близько 100 км трасою E58 / М-14' },
+            { label: 'З Миколаєва', value: '~50 хв', detail: 'Близько 60 км трасою М-14' },
+            { label: 'З Києва', value: '~6 год', detail: 'Через М-05 і Одесу' },
+          ].map((d) => (
+            <li class="flex items-start gap-4 rounded-2xl bg-sand-100 px-4 py-3">
+              <span class="font-display text-lg text-teal-700 min-w-[110px]">{d.value}</span>
+              <span class="flex-1">
+                <span class="font-medium block text-ink">{d.label}</span>
+                <span class="text-sm text-ink-muted">{d.detail}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a
+            href={site.mapsUrl}
+            target="_blank"
+            rel="noopener"
+            class="btn-primary"
+            data-analytics="click_maps"
+          >
+            Прокласти маршрут
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

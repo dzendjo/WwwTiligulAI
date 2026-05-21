@@ -1,0 +1,83 @@
+---
+import { beachPositions, priceNotes } from '@data/prices';
+
+const seasons = beachPositions[0].seasons.map((s) => s.season);
+const dayTypes = beachPositions[0].seasons[0].tiers.map((t) => t.day);
+
+type Cell = { season: string; day: string; uah: number };
+const rows = beachPositions.map((p) => ({
+  ...p,
+  cells: p.seasons.flatMap((s) =>
+    s.tiers.map<Cell>((t) => ({ season: s.season, day: t.day, uah: t.uah }))
+  ),
+}));
+---
+<!-- Mobile (≤sm): cards stack — easier to read than a wide horizontal table -->
+<div class="md:hidden space-y-4">
+  {rows.map((r) => (
+    <div class="rounded-3xl bg-white shadow-card p-5">
+      <div class="flex items-baseline justify-between gap-3">
+        <h3 class="font-display text-lg text-ink">{r.title}</h3>
+        <span class="text-xs px-2.5 py-1 rounded-full bg-sand-200 text-teal-700 whitespace-nowrap">Зона {r.zoneCode}</span>
+      </div>
+      {r.capacity && <p class="text-xs uppercase tracking-wider2 text-coral-500 mt-1">{r.capacity}</p>}
+      <div class="mt-4 grid grid-cols-2 gap-2 text-sm">
+        {r.seasons.flatMap((s) =>
+          s.tiers.map((t) => (
+            <div class="rounded-xl bg-sand-100 px-3 py-2">
+              <div class="text-[11px] uppercase tracking-wider2 text-ink-muted leading-tight">{s.season.replace(' / ', '/')}</div>
+              <div class="flex items-baseline justify-between gap-2 mt-0.5">
+                <span class="text-xs text-ink-muted">{t.day}</span>
+                <span class="font-medium text-teal-700 tabular-nums">{t.uah.toLocaleString('uk-UA')} грн</span>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+    </div>
+  ))}
+</div>
+
+<!-- Tablet+ (md): proper table -->
+<div class="hidden md:block">
+  <div class="overflow-x-auto">
+    <table class="price-table w-full">
+      <thead>
+        <tr>
+          <th rowspan="2" class="!rounded-tl-2xl">Позиція</th>
+          {seasons.map((s, i) => (
+            <th colspan={dayTypes.length} class={i === seasons.length - 1 ? '!rounded-tr-2xl' : ''}>{s}</th>
+          ))}
+        </tr>
+        <tr>
+          {seasons.flatMap(() => dayTypes).map((d) => (
+            <th class="text-sm font-normal bg-teal-600">{d}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody class="bg-white">
+        {rows.map((r) => (
+          <tr>
+            <td>
+              <div class="flex flex-col">
+                <span class="font-medium text-ink">{r.title}</span>
+                {r.capacity && <span class="text-xs text-ink-muted">{r.capacity}</span>}
+              </div>
+            </td>
+            {r.cells.map((c) => (
+              <td class="text-right tabular-nums whitespace-nowrap">
+                {c.uah.toLocaleString('uk-UA')} грн
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<ul class="mt-6 space-y-2 text-sm text-ink-muted">
+  {priceNotes.map((n) => (
+    <li class="flex gap-2"><span class="text-coral-500">•</span><span>{n}</span></li>
+  ))}
+</ul>

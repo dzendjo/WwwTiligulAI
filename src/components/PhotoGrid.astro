@@ -1,0 +1,30 @@
+---
+import { Image } from 'astro:assets';
+
+interface Item {
+  src: ImageMetadata;
+  alt: string;
+  /** Tailwind grid utility, e.g. "row-span-2 col-span-2". */
+  span?: string;
+}
+interface Props {
+  items: Item[];
+  /** Heading-level grid template — defaults to a tight magazine grid. */
+  className?: string;
+}
+const { items, className = '' } = Astro.props;
+---
+<div class={`grid grid-cols-2 lg:grid-cols-4 gap-3 ${className}`}>
+  {items.map((it, idx) => (
+    <figure class={`relative overflow-hidden rounded-2xl bg-sand-200 ${it.span ?? ''}`}>
+      <Image
+        src={it.src}
+        alt={it.alt}
+        widths={[400, 720, 1080]}
+        sizes="(min-width: 1024px) 25vw, 50vw"
+        loading={idx < 2 ? 'eager' : 'lazy'}
+        class="h-full w-full object-cover hover:scale-[1.02] transition duration-700"
+      />
+    </figure>
+  ))}
+</div>

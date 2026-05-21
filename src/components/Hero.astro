@@ -1,0 +1,235 @@
+---
+import { Image } from "astro:assets";
+import { phones } from "@data/contacts";
+
+import beachShot from "@assets/images/beach-hero.jpg";
+import glampShot from "@assets/images/glamping-hero.jpg";
+import kiteShot from "@assets/images/kite-hero.jpg";
+
+const beach = phones.find((p) => p.id === "beach")!;
+
+const features = [
+    {
+        id: "beach",
+        title: "Пляжний клуб",
+        href: "/#beach",
+        image: beachShot,
+        alt: "Гостя на пуфі на пляжі Tiligul Club",
+        analytics: "click_hero_beach",
+    },
+    {
+        id: "glamping",
+        title: "Глемпінг",
+        href: "/#glamping",
+        image: glampShot,
+        alt: "Глемп на косі біля лиману, кайт у небі",
+        analytics: "click_hero_glamping",
+    },
+    {
+        id: "kite",
+        title: "Кайт-школа і спот",
+        href: "/#kite",
+        image: kiteShot,
+        alt: "Кайтсерфер на заході сонця над Тилігульським лиманом",
+        analytics: "click_hero_kite",
+    },
+] as const;
+---
+
+<section class="relative overflow-hidden bg-teal-900">
+    <!-- Mobile video (≤768px). Smaller file, lighter on mobile data. -->
+    <video
+        class="absolute inset-0 h-full w-full object-cover motion-reduce:hidden md:hidden"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata"
+        poster="/videos/liman-hero-poster.jpg"
+        aria-hidden="true"
+    >
+        <source src="/videos/liman-hero-mobile.mp4" type="video/mp4" />
+    </video>
+
+    <!-- Desktop video (≥768px). webm first for size, mp4 fallback. -->
+    <video
+        class="absolute inset-0 h-full w-full object-cover motion-reduce:hidden hidden md:block"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata"
+        poster="/videos/liman-hero-poster.jpg"
+        aria-hidden="true"
+    >
+        <source src="/videos/liman-hero-desktop.webm" type="video/webm" />
+        <source src="/videos/liman-hero-desktop.mp4" type="video/mp4" />
+    </video>
+
+    <!-- Reduced-motion fallback: static poster -->
+    <img
+        src="/videos/liman-hero-poster.jpg"
+        alt=""
+        aria-hidden="true"
+        fetchpriority="high"
+        class="absolute inset-0 h-full w-full object-cover hidden motion-reduce:block"
+    />
+
+    <!-- Readability overlay over the whole section -->
+    <div
+        aria-hidden="true"
+        class="absolute inset-0 bg-gradient-to-b from-teal-900/55 via-teal-900/45 to-teal-900/70"
+    >
+    </div>
+
+    <!-- Content -->
+    <div
+        class="relative container-x pt-10 sm:pt-14 lg:pt-16 pb-10 sm:pb-14 lg:pb-16"
+    >
+        <!-- 1. Hero text -->
+        <div
+            class="mx-auto max-w-4xl text-center flex flex-col items-center gap-4 sm:gap-5"
+        >
+            <span
+                class="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 backdrop-blur px-3 py-1 text-[11px] sm:text-xs font-medium tracking-wider2 uppercase text-white animate-fade-up"
+            >
+                <span
+                    class="h-1.5 w-1.5 rounded-full bg-coral-400 animate-pulse"
+                ></span>
+                Сезон 2026 відкрито!
+            </span>
+
+            <h1
+                class="font-display text-balance text-[2rem] sm:text-5xl lg:text-6xl leading-[1.05] tracking-tight text-white drop-shadow-[0_2px_18px_rgba(3,31,38,0.5)] animate-fade-up [animation-delay:80ms]"
+            >
+                Тиха солона вода.
+                <span class="text-coral-400">Твоє літо без поспіху.</span>
+            </h1>
+
+            <p
+                class="text-base sm:text-lg leading-relaxed text-pretty text-sand-100/95 max-w-2xl drop-shadow-[0_1px_10px_rgba(3,31,38,0.45)] animate-fade-up [animation-delay:160ms]"
+            >
+                Тилігульський лиман — найчистіший і найпрозоріший на півдні
+                України: вода солоніша за Чорне море, спокійна закрита
+                акваторія, піщана коса й заповідний степ.
+            </p>
+
+            <!-- Trust stats -->
+            <ul
+                class="flex flex-wrap items-center justify-center gap-x-5 sm:gap-x-7 gap-y-3 pt-1 text-xs sm:text-sm text-sand-100/80 animate-fade-up [animation-delay:200ms]"
+            >
+                <li class="flex items-baseline gap-1.5">
+                    <span
+                        class="font-display text-lg sm:text-xl text-coral-400 leading-none"
+                        >7&nbsp;м</span
+                    >
+                    <span>прозорість води</span>
+                </li>
+                <li
+                    aria-hidden="true"
+                    class="h-1 w-1 rounded-full bg-sand-100/40"
+                >
+                </li>
+                <li class="flex items-baseline gap-1.5">
+                    <span
+                        class="font-display text-lg sm:text-xl text-coral-400 leading-none"
+                        >28&nbsp;°C</span
+                    >
+                    <span>влітку</span>
+                </li>
+                <li
+                    aria-hidden="true"
+                    class="h-1 w-1 rounded-full bg-sand-100/40"
+                >
+                </li>
+                <li class="flex items-baseline gap-1.5">
+                    <span
+                        class="font-display text-lg sm:text-xl text-coral-400 leading-none"
+                        >30&nbsp;‰</span
+                    >
+                    <span>солоніша за море</span>
+                </li>
+            </ul>
+
+            <div class="animate-fade-up [animation-delay:280ms]">
+                <a
+                    href={`tel:${beach.tel}`}
+                    class="btn-primary gap-3 group"
+                    data-analytics="click_book_beach"
+                >
+                    Забронювати пляж
+                    <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                        class="transition group-hover:translate-x-0.5"
+                    >
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+        <!-- 2. Feature cards (sit directly on the video bg) -->
+        <div
+            class="mt-10 sm:mt-12 lg:mt-14 grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-3"
+        >
+            {
+                features.map((f, i) => (
+                    <a
+                        href={f.href}
+                        aria-label={f.title}
+                        data-analytics={f.analytics}
+                        class="group block animate-fade-up"
+                        style={`animation-delay:${320 + i * 80}ms`}
+                    >
+                        <article class="card flex flex-col h-full transition-shadow duration-300 hover:shadow-cardHover">
+                            <div class="overflow-hidden aspect-[16/10]">
+                                <Image
+                                    src={f.image}
+                                    alt={f.alt}
+                                    widths={[400, 600, 800]}
+                                    sizes="(min-width: 1024px) 380px, (min-width: 768px) 32vw, 92vw"
+                                    loading={i === 0 ? "eager" : "lazy"}
+                                    fetchpriority={i === 0 ? "high" : undefined}
+                                    class="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                                />
+                            </div>
+                            <div class="px-5 py-4 sm:px-6 sm:py-5 flex items-center justify-between gap-4">
+                                <h3 class="font-display text-lg sm:text-xl text-ink leading-snug">
+                                    {f.title}
+                                </h3>
+                                <span
+                                    aria-hidden="true"
+                                    class="flex h-9 w-9 flex-none items-center justify-center rounded-full bg-sand-200/70 text-teal-700 transition-colors duration-300 group-hover:bg-coral-500 group-hover:text-white"
+                                >
+                                    <svg
+                                        width="16"
+                                        height="16"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="transition-transform duration-300 group-hover:translate-x-0.5"
+                                    >
+                                        <line x1="5" y1="12" x2="19" y2="12" />
+                                        <polyline points="12 5 19 12 12 19" />
+                                    </svg>
+                                </span>
+                            </div>
+                        </article>
+                    </a>
+                ))
+            }
+        </div>
+    </div>
+</section>

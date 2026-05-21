@@ -1,0 +1,54 @@
+---
+import { phones, email, socials } from '@data/contacts';
+import { site } from '@data/site';
+import SocialIcon from '@components/SocialIcon.astro';
+---
+<div class="grid gap-4 md:grid-cols-3">
+  {phones.map((p) => {
+    const analytic =
+      p.id === 'beach' ? 'click_book_beach' :
+      p.id === 'glamping' ? 'click_book_glamping' :
+      p.id === 'kite' ? 'click_kite_contact' : 'click_phone';
+    return (
+      <a href={`tel:${p.tel}`} class="rounded-3xl bg-white shadow-card p-6 hover:shadow-cardHover transition flex flex-col" data-analytics={analytic}>
+        <span class="text-xs uppercase tracking-wider2 text-coral-500">{p.label}</span>
+        <span class="mt-2 font-display text-2xl text-ink">{p.display}</span>
+        {p.note && <span class="mt-1 text-sm text-ink-muted">{p.note}</span>}
+      </a>
+    );
+  })}
+</div>
+
+<div class="mt-6 grid gap-4 sm:grid-cols-2">
+  <a href={email.href} class="rounded-3xl bg-white shadow-card p-6 hover:shadow-cardHover transition flex flex-col">
+    <span class="text-xs uppercase tracking-wider2 text-coral-500">Email</span>
+    <span class="mt-2 font-display text-xl text-ink">{email.display}</span>
+  </a>
+  <a href={site.mapsUrl} target="_blank" rel="noopener" class="rounded-3xl bg-teal-500 text-white shadow-card p-6 hover:bg-teal-600 transition flex items-center justify-between gap-4" data-analytics="click_maps">
+    <div>
+      <span class="text-xs uppercase tracking-wider2 text-coral-300">Маршрут</span>
+      <span class="block mt-2 font-display text-xl">Відкрити в Google Maps</span>
+      <span class="block text-sm text-sand-100/80">{site.address.waterbody}, {site.address.locality}</span>
+    </div>
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1118 0z"/>
+      <circle cx="12" cy="10" r="3"/>
+    </svg>
+  </a>
+</div>
+
+<div class="mt-8">
+  <h3 class="eyebrow">Соцмережі</h3>
+  <ul class="mt-3 flex flex-wrap gap-2">
+    {socials.map((s) => (
+      <li>
+        <a href={s.href} aria-label={s.ariaLabel} target="_blank" rel="noopener"
+           class="btn-secondary text-sm gap-2"
+           data-analytics={s.id === 'instagram' ? 'click_instagram' : undefined}>
+          <SocialIcon id={s.id as 'instagram' | 'facebook' | 'telegram' | 'youtube'} class="w-4 h-4" />
+          {s.label}
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>

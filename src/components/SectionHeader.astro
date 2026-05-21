@@ -1,0 +1,21 @@
+---
+interface Props {
+  eyebrow?: string;
+  title: string;
+  /** Optional intro paragraph below title. */
+  intro?: string;
+  /** Center the heading group. */
+  center?: boolean;
+  /** Apply tighter top padding (for stacked sections). */
+  tight?: boolean;
+  /** Override heading level for SEO context. */
+  as?: 'h1' | 'h2' | 'h3';
+}
+const { eyebrow, title, intro, center = false, tight = false, as = 'h2' } = Astro.props;
+const HeadingTag = as as 'h2';
+---
+<div class={`max-w-3xl ${center ? 'mx-auto text-center' : ''} ${tight ? 'mb-8' : 'mb-12 lg:mb-16'}`}>
+  {eyebrow && <span class="eyebrow">{eyebrow}</span>}
+  <HeadingTag class="font-display text-3xl sm:text-4xl lg:text-5xl text-ink mt-3">{title}</HeadingTag>
+  {intro && <p class="mt-5 text-base sm:text-lg text-ink-muted leading-relaxed">{intro}</p>}
+</div>

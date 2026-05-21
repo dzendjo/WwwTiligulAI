@@ -1,0 +1,10 @@
+# Server-level 301 redirects for legacy URLs (faster + SEO-better than Astro's
+# meta-refresh fallback for static deploys).
+/glamping     /camping    301
+/kiteschool   /kite       301
+/kite-school  /kite       301
+/menu         /cafe       301
+/restaurant   /cafe       301
+/about-us     /about      301
+/booking      /beach      301
+/contact      /contacts   301

@@ -1,0 +1,43 @@
+---
+import { site } from '@data/site';
+import { phones } from '@data/contacts';
+const beach = phones.find((p) => p.id === 'beach')!;
+---
+<div
+  class="lg:hidden fixed inset-x-0 bottom-0 z-30 pointer-events-none"
+  style="padding-bottom: env(safe-area-inset-bottom, 0px);"
+>
+  <!-- Soft gradient fade to the page above the CTA, regardless of section bg color -->
+  <div aria-hidden="true" class="h-6 bg-gradient-to-t from-black/15 via-black/5 to-transparent"></div>
+  <div class="pointer-events-auto bg-white/95 backdrop-blur-md border-t border-sand-300/70 shadow-[0_-8px_24px_-12px_rgba(9,63,74,0.18)]">
+    <div class="px-3 py-2.5 grid grid-cols-[1fr_auto_auto] gap-2 items-center">
+      <a href={`tel:${beach.tel}`}
+         class="btn-primary text-[15px] w-full min-h-[52px] !px-4"
+         data-analytics="click_book_beach"
+         aria-label={`Зателефонувати: ${beach.display}`}>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+        </svg>
+        <span>Забронювати пляж</span>
+      </a>
+      <a href={site.mapsUrl}
+         aria-label="Відкрити маршрут у Google Maps"
+         target="_blank" rel="noopener"
+         class="inline-flex items-center justify-center min-h-[52px] min-w-[52px] rounded-full bg-sand-100 text-teal-700 ring-1 ring-teal-700/10 hover:bg-white transition"
+         data-analytics="click_maps">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1118 0z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+      </a>
+      <a href={`tel:${beach.tel}`}
+         aria-label={`Зателефонувати ${beach.display}`}
+         class="inline-flex items-center justify-center min-h-[52px] min-w-[52px] rounded-full bg-sand-100 text-teal-700 ring-1 ring-teal-700/10 hover:bg-white transition"
+         data-analytics="click_phone">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,83 @@
+---
+import { site } from '@data/site';
+import { footerSeoNav } from '@data/navigation';
+import { phones, email, socials } from '@data/contacts';
+import SocialIcon from '@components/SocialIcon.astro';
+
+const year = new Date().getFullYear();
+---
+<footer class="bg-teal-700 text-sand-100 mt-24">
+  <div class="container-x py-16 grid gap-12 lg:grid-cols-[1.2fr_1fr_1fr_1.2fr]">
+    <div>
+      <a href="/" class="flex items-center gap-3 group" aria-label={`${site.name} — на головну`}>
+        <img src="/images/brand/tiligul-mark.svg" alt="" aria-hidden="true" width="48" height="48" class="h-12 w-12" loading="lazy" decoding="async" />
+        <span class="font-wordmark font-semibold uppercase text-lg sm:text-xl tracking-wider2 leading-none">
+          Tiligul <span class="text-coral-400 font-normal">·</span> Club
+        </span>
+      </a>
+      <p class="mt-5 text-sm text-sand-200/80 max-w-prose">
+        {site.shortDescription}
+      </p>
+      <p class="mt-4 text-xs text-sand-200/60">
+        {site.address.waterbody}, {site.address.locality}, {site.address.region}
+      </p>
+    </div>
+
+    <nav aria-label="Сайт">
+      <h4 class="text-xs uppercase tracking-wider2 text-sand-200/60 font-medium">Сайт</h4>
+      <ul class="mt-4 space-y-2 text-sm">
+        {footerSeoNav.map((item) => (
+          <li><a href={item.href} class="hover:text-coral-400 transition">{item.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <div>
+      <h4 class="text-xs uppercase tracking-wider2 text-sand-200/60 font-medium">Контакти</h4>
+      <ul class="mt-4 space-y-3 text-sm">
+        {phones.map((p) => (
+          <li>
+            <a href={`tel:${p.tel}`} class="hover:text-coral-400 transition flex flex-col" data-analytics="click_phone">
+              <span class="text-xs text-sand-200/60">{p.label}</span>
+              <span>{p.display}</span>
+            </a>
+          </li>
+        ))}
+        <li>
+          <a href={email.href} class="hover:text-coral-400 transition flex flex-col">
+            <span class="text-xs text-sand-200/60">Email</span>
+            <span>{email.display}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <h4 class="text-xs uppercase tracking-wider2 text-sand-200/60 font-medium">Соцмережі</h4>
+      <ul class="mt-4 flex flex-wrap gap-2">
+        {socials.map((s) => (
+          <li>
+            <a href={s.href} aria-label={s.ariaLabel} target="_blank" rel="noopener noreferrer"
+               class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm bg-teal-600/60 hover:bg-coral-500 transition"
+               data-analytics={s.id === 'instagram' ? 'click_instagram' : undefined}>
+              <SocialIcon id={s.id as 'instagram' | 'facebook' | 'telegram' | 'youtube'} class="w-4 h-4" />
+              {s.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <div class="mt-6">
+        <a href={site.mapsUrl} target="_blank" rel="noopener noreferrer" class="btn-secondary text-sm" data-analytics="click_maps">
+          Маршрут у Google Maps
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="border-t border-teal-600/60">
+    <div class="container-x py-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-sand-200/60">
+      <p>© {year} {site.legalName}. Усі права захищено.</p>
+      <p>Тилігульський лиман · село Українка · Миколаївська область · Україна</p>
+    </div>
+  </div>
+</footer>

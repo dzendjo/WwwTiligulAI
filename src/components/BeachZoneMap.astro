@@ -1,0 +1,28 @@
+---
+import { Image } from 'astro:assets';
+import beachZonesMap from '@assets/images/beach-zones-map.jpg';
+---
+<div class="rounded-3xl bg-white shadow-card p-5 sm:p-6">
+  <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+    <div>
+      <h3 class="font-display text-lg sm:text-xl text-ink">Схема пляжу</h3>
+      <p class="mt-1 text-sm text-ink-muted">
+        П’ять зон на одному березі: перголи, павільйон-зірки, шезлонги під навісами та під зонтами. WC і кафе — поряд.
+      </p>
+    </div>
+    <span class="self-start inline-flex text-xs px-3 py-1 rounded-full bg-sand-200 text-teal-700 whitespace-nowrap">
+      Незабаром: інтерактивне бронювання
+    </span>
+  </div>
+
+  <figure class="mt-4 overflow-hidden rounded-2xl">
+    <Image
+      src={beachZonesMap}
+      alt="Схема пляжу Tiligul Club: перголи, павільйон-зірки, шезлонги під лівим і правим навісом, шезлонги під зонтами, WC і кафе"
+      widths={[640, 960, 1280, 1600, 2000]}
+      sizes="(min-width: 1280px) 1200px, (min-width: 640px) 90vw, 100vw"
+      loading="lazy"
+      class="w-full h-auto"
+    />
+  </figure>
+</div>

@@ -1,0 +1,294 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Hero from '@components/Hero.astro';
+import SectionHeader from '@components/SectionHeader.astro';
+import BookingCards from '@components/BookingCards.astro';
+import FeatureGrid from '@components/FeatureGrid.astro';
+import PriceTable from '@components/PriceTable.astro';
+import FAQAccordion from '@components/FAQAccordion.astro';
+import ContactCards from '@components/ContactCards.astro';
+import BeachZoneMap from '@components/BeachZoneMap.astro';
+import InstagramGrid from '@components/InstagramGrid.astro';
+import { Image } from 'astro:assets';
+
+import { glampingTypes, kiteServices } from '@data/prices';
+import { mainServices } from '@data/services';
+import { phones } from '@data/contacts';
+import { site } from '@data/site';
+import { faq } from '@data/faq';
+
+import locationDaisies from '@assets/images/location-01.jpg';
+import beachSunset from '@assets/images/beach-09.jpg';
+import glamp1 from '@assets/images/glamp-2p.jpg';
+import glamp2 from '@assets/images/glamp-3p.jpg';
+import glamp3 from '@assets/images/glamp-5p.jpg';
+import kiteHero from '@assets/images/kite-main.jpg';
+import cafeMain from '@assets/images/cafe-main.jpg';
+import cafeSeafood from '@assets/images/cafe-seafood.jpg';
+import cafeSoups from '@assets/images/cafe-soups.jpg';
+
+const beach = phones.find((p) => p.id === 'beach')!;
+const glampPhone = phones.find((p) => p.id === 'glamping')!;
+const kitePhone = phones.find((p) => p.id === 'kite')!;
+
+// ItemList of services (cleaner than OfferCatalog without prices — Google ignores Offer w/o price).
+const servicesList = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Послуги Tiligul Club',
+  itemListElement: mainServices.map((s, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    item: {
+      '@type': 'Service',
+      name: s.title,
+      description: s.description,
+      url: new URL(s.href, site.url).toString(),
+    },
+  })),
+};
+
+// FAQPage — strips inline HTML/links from answers (schema.org wants plain text).
+const stripHtml = (html: string) => html.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: stripHtml(f.a) },
+  })),
+};
+---
+<BaseLayout
+  title={`${site.name} — пляжний клуб на Тилігульському лимані, глемпінг і кайт-школа`}
+  description={site.shortDescription}
+  path="/"
+  ogImage="/images/og/default.jpg"
+  jsonLd={[servicesList, faqJsonLd]}
+>
+  <Hero />
+
+  <!-- 2. About location (Лиман) -->
+  <section id="location" class="section bg-white relative pt-20 sm:pt-28 lg:pt-36">
+    <!-- Soft divider between hero and first section -->
+    <div aria-hidden="true" class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 h-px w-24 bg-gradient-to-r from-transparent via-teal-700/20 to-transparent"></div>
+    <div class="container-x grid lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <SectionHeader
+          eyebrow="Регіональний ландшафтний парк"
+          title="Лиман — не море. І в цьому його сила."
+          intro="Tiligul Club — на піщаній косі Тилігульського лиману біля Українки, у межах регіонального ландшафтного парку. Закрита солона акваторія: вода солоніша за Чорне море, прозорість до 7 метрів, влітку прогрівається до 28 °C. Захід пологий, дно піщане, без мін і без сильних хвиль."
+        />
+        <p class="text-ink-muted leading-relaxed mt-2">
+          Коса — це кілометри тиші. За межами клубу — степ, очерет, чайки, шум вітру
+          в траві: ні автостради, ні бетону. Зранку — кава біля води; вдень — шезлонг
+          із книжкою; на гриль — морепродукти з лиману; на захід сонця — золоте світло
+          з тераси глемпа. О шостій вечора день тут не закінчується.
+        </p>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <Image src={locationDaisies} alt="Польові ромашки біля Тилігульського лиману" widths={[400, 640, 800]} sizes="(min-width: 1024px) 280px, 45vw" class="rounded-3xl object-cover aspect-[3/4] h-full w-full" loading="lazy" />
+        <Image src={beachSunset} alt="Захід сонця над Тилігульським лиманом" widths={[400, 640, 800]} sizes="(min-width: 1024px) 280px, 45vw" class="rounded-3xl object-cover aspect-[3/4] h-full w-full sm:mt-8" loading="lazy" />
+      </div>
+    </div>
+
+    <div class="container-x mt-16">
+      <h3 class="font-display text-2xl text-ink mb-6">Чому це не звичайний пляж</h3>
+      <FeatureGrid />
+    </div>
+  </section>
+
+  <!-- 3. Beach booking -->
+  <section id="beach" class="section">
+    <div class="container-x">
+      <SectionHeader
+        eyebrow="Найважливіше"
+        title="Що забронювати на пляжі?"
+        intro="Чотири типи пляжних позицій — від класичного шезлонга до лаунж-зірки на компанію. Можна забронювати наперед телефоном або в Instagram."
+      />
+      <BookingCards />
+
+      <!-- Shared infrastructure: one card, explicitly framed as "applies to all zones" -->
+      <div class="mt-8 rounded-2xl bg-white shadow-card p-5 sm:p-6">
+        <div class="flex items-center gap-2 pb-4 mb-4 border-b border-sand-300/50">
+          <span class="h-2 w-2 rounded-full bg-coral-500 flex-none"></span>
+          <span class="text-xs sm:text-sm font-medium uppercase tracking-wider2 text-teal-700">
+            На території клубу — для всіх гостей
+          </span>
+        </div>
+        <ul class="grid gap-x-6 gap-y-3 sm:grid-cols-2 text-sm">
+          {[
+            { title: 'Душі і туалети', text: 'з переодягальнями, поруч із пляжем' },
+            { title: 'Опріснювальна зона', text: 'сполоснутись після купання — щоб не носити сіль на шкірі' },
+            { title: 'Браслети', text: 'відкривають доступ до душів і туалетів. Вхід на територію клубу — вільний' },
+            { title: 'Бар поруч із пляжем', text: 'напої та їжа приходять прямо до вашої позиції' },
+          ].map((i) => (
+            <li class="flex gap-3">
+              <span class="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-coral-500"></span>
+              <span>
+                <span class="font-medium text-ink">{i.title}.</span>
+                <span class="text-ink-muted ml-1">{i.text}.</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="mt-12">
+        <BeachZoneMap />
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Prices preview -->
+  <section id="prices" class="section bg-white">
+    <div class="container-x">
+      <SectionHeader
+        eyebrow="Ціни"
+        title="Зрозуміла таблиця, без сюрпризів"
+        intro="Ціни залежать від сезону (червень-вересень або липень-серпень) і дня тижня (будні чи вихідні)."
+      />
+      <PriceTable />
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href={`tel:${beach.tel}`} class="btn-primary" data-analytics="click_book_beach">Забронювати пляж</a>
+        <a href="/prices" class="btn-secondary">Усі ціни (включно з глемпами і кайтом)</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Glamping -->
+  <section id="glamping" class="section">
+    <div class="container-x">
+      <SectionHeader
+        eyebrow="Глемпінг PROZORI · 20 наметів"
+        title="Залишайтесь на ніч"
+        intro="Ранок починається під шум хвиль, до води — 10 кроків. 20 глемпів PROZORI стоять прямо на піщаній косі: оберіть 2-, 3- чи 5-місний — усі повністю облаштовані (меблі, мініхолодильник, текстиль, крита тераса з видом на захід сонця). Приїжджаєте з купальником, а не з рюкзаком."
+      />
+      <div class="grid gap-6 md:grid-cols-3">
+        {[
+          { type: glampingTypes[0], img: glamp1 },
+          { type: glampingTypes[1], img: glamp2 },
+          { type: glampingTypes[2], img: glamp3 },
+        ].map(({ type, img }) => (
+          <article class="card flex flex-col group">
+            <div class="aspect-[4/3] overflow-hidden">
+              <Image src={img} alt={`Глемп ${type.title} на Тилігульському лимані`} widths={[480, 720, 960]} sizes="(min-width: 1024px) 360px, 90vw" class="h-full w-full object-cover transition group-hover:scale-105 duration-700" loading="lazy" />
+            </div>
+            <div class="p-6 flex flex-col flex-1">
+              <h3 class="font-display text-2xl text-ink">{type.title}</h3>
+              <p class="text-xs uppercase tracking-wider2 text-coral-500 mt-1">{type.size} · {type.guests}</p>
+              <p class="text-ink-muted mt-3 text-sm leading-relaxed">{type.description}</p>
+              <div class="mt-auto pt-5 flex items-end justify-between gap-3">
+                <span class="font-medium text-teal-700">{type.fromPriceLabel}</span>
+                <a href={glampPhone.bookingUrl!} target="_blank" rel="noopener" class="btn-dark text-sm" data-analytics="click_book_glamping">Забронювати</a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Kite -->
+  <section id="kite" class="section bg-teal-700 text-sand-100 overflow-hidden">
+    <div class="container-x grid lg:grid-cols-2 gap-12 items-center">
+      <div class="rounded-[2rem] overflow-hidden aspect-[4/5] shadow-card">
+        <Image src={kiteHero} alt="Кайтсерфер на Тилігульському лимані" widths={[480, 720, 1080]} sizes="(min-width: 1024px) 480px, 90vw" loading="lazy" class="h-full w-full object-cover" />
+      </div>
+      <div>
+        <span class="eyebrow !text-coral-400">Кайт-школа і спот</span>
+        <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl mt-3 !text-sand-100">Кайт — для тих, хто хоче більше руху й вітру</h2>
+        <p class="mt-5 text-sand-200/90 leading-relaxed">
+          Стабільні вітри Тилігула, власна метеостанція, інструктори зі стажем,
+          прокат кайтів, wingfoil і SUP. Ідеально для першого старту і для прогресу.
+        </p>
+        <ul class="mt-6 grid gap-3">
+          {kiteServices.map((k) => (
+            <li class="flex items-start gap-4 rounded-2xl bg-teal-600/40 px-4 py-3">
+              <span class="mt-1 h-2.5 w-2.5 rounded-full bg-coral-400 flex-none"></span>
+              <span class="flex-1">
+                <span class="font-medium block">{k.title}</span>
+                <span class="text-sm text-sand-200/80">{k.description}</span>
+              </span>
+              {k.fromPriceLabel && <span class="text-sm font-medium whitespace-nowrap">{k.fromPriceLabel}</span>}
+            </li>
+          ))}
+        </ul>
+        <a href={kitePhone.telegram!} target="_blank" rel="noopener" class="btn-primary mt-7" data-analytics="click_kite_contact">Домовитися про навчання в Telegram</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Cafe -->
+  <section id="cafe" class="section">
+    <div class="container-x grid lg:grid-cols-2 gap-12 items-center">
+      <div class="order-2 lg:order-1">
+        <span class="eyebrow">Кафе і бар</span>
+        <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl text-ink mt-3">Локальне, з гриля, біля води</h2>
+        <p class="mt-5 text-ink-muted leading-relaxed">
+          Морепродукти з лиману, м’ясо й риба з гриля на справжньому вогні,
+          домашні десерти, авторські коктейлі та вино. Сервіс приносить замовлення
+          до вашого шезлонга, перголи чи лаунж-зірки — за смачним нікуди йти.
+        </p>
+        <ul class="mt-5 grid grid-cols-2 gap-2 text-sm text-ink-soft">
+          {['Локальні морепродукти', 'Гриль на вогні', 'Тарілки на компанію', 'Сезонні десерти', 'Коктейлі й вино', 'Кава і свіжі соки'].map((i) => (
+            <li class="flex items-start gap-2"><span class="mt-1 h-1.5 w-1.5 rounded-full bg-coral-500"/><span>{i}</span></li>
+          ))}
+        </ul>
+        <div class="mt-7 flex gap-3 flex-wrap">
+          <a href="https://expz.menu/8b91fb51-73fc-4b02-863c-59411f2914b8" target="_blank" rel="noopener" class="btn-primary">Подивитися меню</a>
+        </div>
+      </div>
+      <!-- Mosaic: main portrait (row-span-2) + 2 landscape helpers stacked -->
+      <div class="order-1 lg:order-2 grid grid-cols-2 gap-3 sm:gap-4">
+        <div class="row-span-2 rounded-3xl overflow-hidden">
+          <Image src={cafeMain} alt="Стіл із локальними закусками й вином над водою Тилігульського лиману" widths={[400, 640, 800]} sizes="(min-width: 1024px) 280px, 45vw" class="h-full w-full object-cover" loading="lazy" />
+        </div>
+        <div class="rounded-3xl overflow-hidden aspect-[4/3]">
+          <Image src={cafeSeafood} alt="Тарілка з локальних смажених морепродуктів біля води" widths={[300, 480, 640]} sizes="(min-width: 1024px) 280px, 45vw" class="h-full w-full object-cover" loading="lazy" />
+        </div>
+        <div class="rounded-3xl overflow-hidden aspect-[4/3]">
+          <Image src={cafeSoups} alt="Сезонні супи на терасі кафе" widths={[300, 480, 640]} sizes="(min-width: 1024px) 280px, 45vw" class="h-full w-full object-cover" loading="lazy" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Instagram -->
+  <section id="news" class="section bg-sand-200/40">
+    <div class="container-x">
+      <SectionHeader
+        eyebrow="Instagram"
+        title="Живе літо в Instagram"
+        intro="Куратовані кадри сезону з нашого облікового запису. Свіжі публікації і відео — у профілі."
+        center
+      />
+      <InstagramGrid />
+    </div>
+  </section>
+
+  <!-- 9. FAQ -->
+  <section id="faq" class="section">
+    <div class="container-x">
+      <SectionHeader
+        eyebrow="Питання та відповіді"
+        title="Усе, що зазвичай питають"
+        center
+      />
+      <FAQAccordion />
+    </div>
+  </section>
+
+  <!-- 10. Contacts -->
+  <section id="contacts" class="section bg-white">
+    <div class="container-x">
+      <SectionHeader
+        eyebrow="Контакти"
+        title="Як з нами зв’язатися"
+        intro="Окремі номери для пляжу, глемпів і кайт-школи — щоб ви одразу потрапили до того, хто відповідає за вашу заявку."
+      />
+      <ContactCards />
+    </div>
+  </section>
+</BaseLayout>

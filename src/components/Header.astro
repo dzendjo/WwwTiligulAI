@@ -1,0 +1,75 @@
+---
+import { primaryNav } from '@data/navigation';
+import { site } from '@data/site';
+---
+<header class="sticky top-0 z-40 w-full border-b border-sand-300/40 bg-sand-100/80 backdrop-blur-md">
+  <div class="container-x flex items-center justify-between gap-3 py-2.5 sm:py-3">
+    <a href="/" class="flex items-center gap-2 sm:gap-3 group min-w-0" aria-label={`${site.name} — на головну`}>
+      <img src="/images/brand/tiligul-mark.svg" alt="" aria-hidden="true" width="44" height="44" class="h-9 w-9 sm:h-11 sm:w-11 flex-none" loading="eager" decoding="async" />
+      <span class="font-wordmark font-semibold uppercase text-[13px] sm:text-base text-teal-700 tracking-wider2 leading-none truncate">
+        Tiligul <span class="text-coral-500 font-normal">·</span> Club
+      </span>
+    </a>
+
+    <nav aria-label="Основна навігація" class="hidden lg:block">
+      <ul class="flex items-center gap-1">
+        {primaryNav.map((item) => (
+          <li>
+            <a href={item.href} class="px-3 py-2 text-sm text-teal-700 hover:text-coral-500 transition rounded-full">
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <a href="/#contacts" class="btn-primary text-sm hidden md:inline-flex" data-analytics="click_book_beach">
+        Забронювати пляж
+      </a>
+      <button id="nav-toggle" type="button"
+              class="lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-full text-teal-700 bg-white/60 hover:bg-white shadow-sm ring-1 ring-teal-700/10"
+              aria-controls="mobile-nav" aria-expanded="false" aria-label="Відкрити меню">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <line x1="4" y1="7" x2="20" y2="7"/>
+          <line x1="4" y1="12" x2="20" y2="12"/>
+          <line x1="4" y1="17" x2="20" y2="17"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile nav drawer -->
+  <div id="mobile-nav" class="lg:hidden hidden border-t border-sand-300/40 bg-sand-100">
+    <nav aria-label="Мобільна навігація" class="container-x py-3">
+      <ul class="grid grid-cols-2 gap-2">
+        {primaryNav.map((item) => (
+          <li>
+            <a href={item.href} class="flex items-center min-h-[48px] px-3 rounded-xl text-teal-700 bg-white/70 hover:bg-white text-[15px] font-medium ring-1 ring-teal-700/5">
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <a href="/#contacts" class="btn-primary w-full mt-3" data-analytics="click_book_beach">Забронювати пляж</a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const btn = document.getElementById('nav-toggle');
+  const panel = document.getElementById('mobile-nav');
+  if (btn && panel) {
+    btn.addEventListener('click', () => {
+      const open = panel.classList.toggle('hidden') === false;
+      btn.setAttribute('aria-expanded', String(open));
+    });
+    // Close on link tap (clean UX on mobile)
+    panel.querySelectorAll('a').forEach((a) =>
+      a.addEventListener('click', () => {
+        panel.classList.add('hidden');
+        btn.setAttribute('aria-expanded', 'false');
+      })
+    );
+  }
+</script>

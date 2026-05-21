@@ -1,0 +1,45 @@
+---
+import { site } from '@data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Canonical path, e.g. "/beach" — site URL is prepended. */
+  path: string;
+  /** OG image path served from /public, e.g. "/og/beach.jpg". Defaults to brand OG image. */
+  ogImage?: string;
+  /** JSON-LD structured-data objects, already prepared by the page. */
+  jsonLd?: Record<string, unknown>[];
+  /** Set noindex on temporary or thin pages. */
+  noindex?: boolean;
+}
+
+const { title, description, path, ogImage = '/images/og/default.jpg', jsonLd = [], noindex = false } = Astro.props;
+
+const canonical = new URL(path, site.url).toString();
+const ogImageAbs = new URL(ogImage, site.url).toString();
+---
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:locale" content={site.locale} />
+<meta property="og:image" content={ogImageAbs} />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageAbs} />
+
+<!-- JSON-LD -->
+{jsonLd.map((schema) => (
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
+))}

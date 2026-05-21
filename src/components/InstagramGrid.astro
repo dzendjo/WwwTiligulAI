@@ -1,0 +1,39 @@
+---
+/**
+ * Latest covers from @tiligul.club Instagram, refreshed manually with instaloader.
+ * Each tile = cover (slide #1) of a post; full carousel opens on instagram.com.
+ * To refresh: re-run instaloader and swap the 6 ig-*.jpg files in src/assets/images.
+ */
+import { Image } from 'astro:assets';
+import { socials } from '@data/contacts';
+
+import ig1 from '@assets/images/ig-1.jpg';
+import ig2 from '@assets/images/ig-2.jpg';
+import ig3 from '@assets/images/ig-3.jpg';
+import ig4 from '@assets/images/ig-4.jpg';
+import ig5 from '@assets/images/ig-5.jpg';
+import ig6 from '@assets/images/ig-6.jpg';
+
+const tiles = [
+  { img: ig1, alt: 'Кайтерка на піщаній косі — кадр із Instagram Tiligul Club' },
+  { img: ig2, alt: 'Захід сонця над лиманом і кайтер у воді — кадр із Instagram' },
+  { img: ig3, alt: 'Грильова таця: креветки, кальмари, риба — кадр кафе Tiligul Club' },
+  { img: ig4, alt: 'Портрет кайтерки з бордом на пляжі — кадр із Instagram' },
+  { img: ig5, alt: 'Піщана коса з чайками над водою лиману' },
+  { img: ig6, alt: 'Чорно-білий силует кайтерки з бордом — мінімалістичний кадр' },
+];
+const ig = socials.find((s) => s.id === 'instagram')!;
+---
+<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3">
+  {tiles.map((t) => (
+    <a href={ig.href} target="_blank" rel="noopener" class="relative aspect-square overflow-hidden rounded-2xl bg-sand-200" data-analytics="click_instagram">
+      <Image src={t.img} alt={t.alt} widths={[300, 480]} sizes="(min-width: 1024px) 200px, 50vw" loading="lazy" class="h-full w-full object-cover hover:scale-[1.05] transition duration-700" />
+    </a>
+  ))}
+</div>
+
+<div class="mt-6 text-center">
+  <a href={ig.href} target="_blank" rel="noopener" class="btn-secondary" data-analytics="click_instagram">
+    Дивитися в Instagram
+  </a>
+</div>

@@ -1,0 +1,73 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SectionHeader from '@components/SectionHeader.astro';
+import Breadcrumbs from '@components/Breadcrumbs.astro';
+import InstagramGrid from '@components/InstagramGrid.astro';
+import { site } from '@data/site';
+
+const breadcrumbJson = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Головна', item: site.url + '/' },
+    { '@type': 'ListItem', position: 2, name: 'Новини', item: site.url + '/news' },
+  ],
+};
+
+// Hand-curated featured news. Add new entries at the top.
+const featured = [
+  {
+    date: '2025-08-12',
+    title: 'Літній сезон у розпалі',
+    excerpt: 'Бронюйте перголи на липень-серпень — найбільш завантажене вікно сезону. Ваш день на лимані того вартий.',
+  },
+  {
+    date: '2025-07-04',
+    title: 'Свіжі морепродукти — щотижня',
+    excerpt: 'Креветки і мідії на грилі — тепер постійні позиції меню. Раки сезонні, доступність — за тиждень.',
+  },
+  {
+    date: '2025-06-15',
+    title: 'Кайт-школа: розклад занять',
+    excerpt: 'Школа працює щодня в межах вітрової прогнози. Записуйтесь заздалегідь — група початківців обмежена.',
+  },
+];
+---
+<BaseLayout
+  title="Новини Tiligul Club — оновлення сезону, події, кайт-розклад"
+  description="Свіжі новини Tiligul Club: оновлення меню, розклад кайт-школи, події сезону та анонси. Плюс — стрічка з Instagram."
+  path="/news"
+  jsonLd={[breadcrumbJson]}
+>
+  <Breadcrumbs items={[{ label: 'Головна', href: '/' }, { label: 'Новини' }]} />
+
+  <section class="section pt-10">
+    <div class="container-x">
+      <SectionHeader
+        eyebrow="Новини"
+        title="Що відбувається в Tiligul Club"
+        intro="Куратовані новини сезону. Для щоденного оновлення — Instagram."
+        as="h1"
+      />
+
+      <div class="grid gap-4 md:grid-cols-3">
+        {featured.map((n) => (
+          <article class="rounded-3xl bg-white shadow-card p-6">
+            <time class="text-xs uppercase tracking-wider2 text-coral-500" datetime={n.date}>
+              {new Date(n.date).toLocaleDateString('uk-UA', { day: '2-digit', month: 'long', year: 'numeric' })}
+            </time>
+            <h2 class="font-display text-xl text-ink mt-2">{n.title}</h2>
+            <p class="mt-2 text-sm text-ink-muted leading-relaxed">{n.excerpt}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-x">
+      <SectionHeader eyebrow="Instagram" title="Кадри з сезону" center />
+      <InstagramGrid />
+    </div>
+  </section>
+</BaseLayout>

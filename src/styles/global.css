@@ -1,0 +1,125 @@
+@import './fonts.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* --- Brand tokens (CSS variables mirror Tailwind theme for non-Tailwind sites/components) --- */
+:root {
+  --teal-500: #0E5C6B;
+  --teal-600: #0B4E5B;
+  --teal-700: #093F4A;
+  --sand-100: #F8F1E2;
+  --sand-200: #F2E6D0;
+  --sand-300: #E8D6B5;
+  --coral-500: #E55F36;
+  --coral-400: #EB6E45;
+  --ink: #0A2A30;
+  --ink-soft: #1E3A40;
+  --ink-muted: #506065;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+    /* Reserve the scrollbar lane on all pages so centered layouts don't shift
+       horizontally when content grows past one viewport. */
+    scrollbar-gutter: stable;
+  }
+  body {
+    @apply bg-sand-100 text-ink font-sans;
+    font-feature-settings: 'cv11', 'ss01';
+    /* Stop iOS auto-zoom on input focus and accidental horizontal overflow on tiny screens */
+    overflow-x: hidden;
+  }
+  h1, h2, h3, h4, h5 {
+    @apply font-display font-medium text-ink;
+    letter-spacing: -0.01em;
+  }
+  /* Accessible focus rings — never remove */
+  :focus-visible {
+    outline: 2px solid var(--coral-500);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+  /* Touch-target safety on mobile */
+  button, a {
+    touch-action: manipulation;
+  }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-container px-4 sm:px-8 lg:px-12;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 sm:px-6
+           text-sm sm:text-base font-medium tracking-wide transition
+           min-h-[48px];
+  }
+  .btn-primary {
+    @apply btn bg-coral-500 text-white hover:bg-coral-600 shadow-card hover:shadow-cardHover;
+  }
+  .btn-secondary {
+    @apply btn bg-white/80 backdrop-blur text-teal-700 ring-1 ring-teal-700/10
+           hover:bg-white hover:ring-teal-700/20;
+  }
+  .btn-ghost {
+    @apply btn text-teal-700 hover:bg-teal-500/5;
+  }
+  .btn-dark {
+    @apply btn bg-teal-500 text-white hover:bg-teal-600;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wider2
+           text-coral-500;
+  }
+
+  .section {
+    @apply py-12 sm:py-20 lg:py-28;
+  }
+
+  /* Prevent horizontal scroll caused by transforms / oversized children */
+  .no-scrollbar { scrollbar-width: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+
+  .card {
+    @apply rounded-3xl bg-white shadow-card overflow-hidden;
+  }
+
+  .price-table {
+    /* border-collapse:separate + border-spacing:0 lets the outer rounded corners
+       (applied to the first/last <th> in the FIRST header row) render without
+       cell-edge bleed; without this, browser collapses borders and the radius
+       gets clipped, producing visible notches. */
+    @apply w-full text-left text-sm sm:text-base border-separate border-spacing-0;
+  }
+  /* Header cells — corner rounding is applied explicitly in markup
+     (only to the FIRST header row), not via first:/last: which would also
+     match cells in the sub-header row. */
+  .price-table thead th {
+    @apply bg-teal-500 text-white font-medium px-4 py-3;
+  }
+  .price-table tbody td {
+    @apply px-4 py-3 border-b border-sand-300/60;
+  }
+  .price-table tbody tr:last-child td {
+    @apply border-b-0;
+  }
+  .price-table tbody tr:hover td {
+    @apply bg-sand-100/60;
+  }
+}

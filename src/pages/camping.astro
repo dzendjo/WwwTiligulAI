@@ -1,0 +1,129 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SectionHeader from '@components/SectionHeader.astro';
+import Breadcrumbs from '@components/Breadcrumbs.astro';
+import FAQAccordion from '@components/FAQAccordion.astro';
+import { Image } from 'astro:assets';
+import { glampingTypes } from '@data/prices';
+import { phones } from '@data/contacts';
+import { site } from '@data/site';
+import { faq } from '@data/faq';
+
+import glamp1 from '@assets/images/glamp-2p.jpg';
+import glamp2 from '@assets/images/glamp-3p.jpg';
+import glamp3 from '@assets/images/glamp-5p.jpg';
+
+const glampPhone = phones.find((p) => p.id === 'glamping')!;
+const images = [glamp1, glamp2, glamp3];
+// FAQ items relevant to glamping visitors: safety with kids, food, booking, season.
+const campingFaq = [2, 6, 7, 11].map((i) => faq[i]).filter(Boolean);
+
+const breadcrumbJson = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Головна', item: site.url + '/' },
+    { '@type': 'ListItem', position: 2, name: 'Глемпінг', item: site.url + '/camping' },
+  ],
+};
+
+const lodgingJson = {
+  '@context': 'https://schema.org',
+  '@type': 'Campground',
+  name: 'Tiligul Club Glamping (PROZORI)',
+  description: 'Глемпінг PROZORI на Тилігульському лимані: 20 наметів трьох конфігурацій — 2-, 3- і 5-місні. Власна крита тераса з видом на лиман у кожному.',
+  url: site.url + '/camping',
+  telephone: glampPhone.tel,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: site.address.locality,
+    addressRegion: site.address.region,
+    addressCountry: 'UA',
+  },
+};
+---
+<BaseLayout
+  title="Глемпінг PROZORI на Тилігульському лимані — 20 наметів (2/3/5 місць)"
+  description="Глемпінг PROZORI: 20 наметів на березі Тилігульського лиману. 2-, 3- і 5-місні конфігурації з критою терасою з видом на лиман."
+  path="/camping"
+  ogImage="/images/og/camping.jpg"
+  jsonLd={[breadcrumbJson, lodgingJson]}
+>
+  <Breadcrumbs items={[{ label: 'Головна', href: '/' }, { label: 'Глемпінг' }]} />
+
+  <section class="section pt-10">
+    <div class="container-x grid lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <span class="eyebrow">Глемпінг PROZORI · 20 наметів</span>
+        <h1 class="font-display text-4xl sm:text-5xl text-ink mt-3">Прокидайтесь за 10 кроків від води</h1>
+        <p class="mt-5 text-ink-muted leading-relaxed">
+          20 глемпів PROZORI стоять прямо на піщаній косі — 5–10 метрів до лиману.
+          Три конфігурації — 2-, 3- і 5-місні — повністю облаштовані: меблі,
+          мініхолодильник, якісний текстиль, крита тераса з видом на захід сонця.
+          Усе необхідне всередині, нічого збирати з дому.
+        </p>
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a href={glampPhone.bookingUrl!} target="_blank" rel="noopener" class="btn-primary" data-analytics="click_book_glamping">Забронювати онлайн</a>
+          <a href="/prices" class="btn-secondary">Ціни</a>
+        </div>
+      </div>
+      <Image src={glamp2} alt="Інтер'єр глемпа PROZORI на Тилігульському лимані" widths={[640, 960, 1280]} sizes="(min-width: 1024px) 560px, 90vw" class="rounded-[2rem] aspect-[4/5] object-cover shadow-card w-full h-full" loading="eager" fetchpriority="high" />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-x">
+      <SectionHeader
+        eyebrow="Оберіть один із 20 глемпів"
+        title="Три конфігурації — для пари, родини й компанії"
+      />
+      <div class="grid gap-6 md:grid-cols-3">
+        {glampingTypes.map((g, i) => (
+          <article class="card flex flex-col">
+            <div class="aspect-[4/3] overflow-hidden">
+              <Image src={images[i]} alt={`Глемп ${g.title} на Тилігульському лимані`} widths={[480, 720, 960]} sizes="(min-width: 1024px) 360px, 90vw" class="h-full w-full object-cover" loading="lazy" />
+            </div>
+            <div class="p-6 flex flex-col flex-1">
+              <h3 class="font-display text-2xl text-ink">{g.title}</h3>
+              <p class="text-xs uppercase tracking-wider2 text-coral-500 mt-1">{g.size} · {g.guests}</p>
+              <p class="mt-2 text-sm font-medium text-ink-soft">{g.beds}</p>
+              <p class="mt-3 text-sm text-ink-muted leading-relaxed flex-1">{g.description}</p>
+              <div class="mt-5 flex items-end justify-between gap-3">
+                <span class="font-medium text-teal-700">{g.fromPriceLabel}</span>
+                <a href={glampPhone.bookingUrl!} target="_blank" rel="noopener" class="btn-dark text-sm" data-analytics="click_book_glamping">Забронювати</a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="container-x">
+      <SectionHeader eyebrow="Що отримуєте" title="У кожному наметі" />
+      <div class="grid gap-4 md:grid-cols-3">
+        {[
+          { t: 'Крита тераса', d: 'З видом на лиман — місце для кави, заходу сонця і книжки.' },
+          { t: 'Якісні меблі', d: 'Дерев’яні меблі всередині — намет схожий на маленьку кімнату, а не на похідну палатку.' },
+          { t: 'Мініхолодильник', d: 'Тримати воду, фрукти, вино чи сніданок прохолодними поруч.' },
+          { t: 'Якісний текстиль', d: 'Білизна, рушники, плед — усе включено в ціну.' },
+          { t: 'Доступ до пляжу', d: 'Прямий шлях до косі та інфраструктури клубу.' },
+          { t: 'Паркінг', d: 'На території, поруч із глемпами.' },
+        ].map((f) => (
+          <div class="rounded-3xl bg-sand-100 p-6 shadow-card">
+            <h3 class="font-display text-xl text-ink">{f.t}</h3>
+            <p class="mt-2 text-sm text-ink-muted">{f.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-x">
+      <SectionHeader eyebrow="FAQ" title="Питання про глемпінг" center />
+      <FAQAccordion items={campingFaq.length ? campingFaq : undefined} />
+    </div>
+  </section>
+</BaseLayout>

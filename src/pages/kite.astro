@@ -1,0 +1,88 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SectionHeader from '@components/SectionHeader.astro';
+import Breadcrumbs from '@components/Breadcrumbs.astro';
+import { Image } from 'astro:assets';
+import { kiteServices } from '@data/prices';
+import { phones } from '@data/contacts';
+import { site } from '@data/site';
+
+import kiteHero from '@assets/images/kite-main.jpg';
+
+const kitePhone = phones.find((p) => p.id === 'kite')!;
+
+const breadcrumbJson = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Головна', item: site.url + '/' },
+    { '@type': 'ListItem', position: 2, name: 'Кайт-школа', item: site.url + '/kite' },
+  ],
+};
+---
+<BaseLayout
+  title="Кайт-школа Tiligul — навчання кайтсерфінгу на Тилігульському лимані"
+  description="Кайт-школа на стабільному споті лиману: інструктори, прокат, перший крок, стартовий курс, прогрес, wingfoil і SUP. Власна метеостанція."
+  path="/kite"
+  ogImage="/images/og/kite.jpg"
+  jsonLd={[breadcrumbJson]}
+>
+  <Breadcrumbs items={[{ label: 'Головна', href: '/' }, { label: 'Кайт-школа' }]} />
+
+  <section class="section pt-10 bg-teal-700 text-sand-100">
+    <div class="container-x grid lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <span class="eyebrow !text-coral-400">Кайт-школа і спот</span>
+        <h1 class="font-display text-4xl sm:text-5xl mt-3 !text-sand-100">Стабільний вітер. Спокійна вода. Своя метеостанція.</h1>
+        <p class="mt-5 text-sand-200/90 leading-relaxed">
+          Тилігульський лиман — один із найкращих кайт-спотів регіону: великий простір
+          рівної води, прогнозовані вітри і безпечна акваторія. Школа Tiligul Club —
+          це інструктори зі стажем, обладнання, метеостанція й сервіс.
+        </p>
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a href={kitePhone.telegram!} target="_blank" rel="noopener" class="btn-primary" data-analytics="click_kite_contact">Написати в Telegram</a>
+          <a href="/prices" class="btn-secondary !text-teal-700">Ціни на навчання</a>
+        </div>
+      </div>
+      <Image src={kiteHero} alt="Кайтсерфер у стрибку над водою Тилігульського лиману" widths={[640, 960, 1280]} sizes="(min-width: 1024px) 560px, 90vw" class="rounded-[2rem] aspect-[4/5] object-cover shadow-card w-full h-full" loading="eager" fetchpriority="high" />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-x">
+      <SectionHeader eyebrow="Курси" title="Що пропонує школа" />
+      <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+        {kiteServices.map((k) => (
+          <article class="rounded-3xl bg-white shadow-card p-6 flex flex-col">
+            <h3 class="font-display text-xl text-ink">{k.title}</h3>
+            <p class="mt-2 text-sm text-ink-muted flex-1">{k.description}</p>
+            {k.fromPriceLabel && <p class="mt-4 font-medium text-teal-700">{k.fromPriceLabel}</p>}
+            <a href={kitePhone.telegram!} target="_blank" rel="noopener" class="btn-dark text-sm mt-5" data-analytics="click_kite_contact">Дізнатися більше</a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="container-x grid lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <SectionHeader eyebrow="Чому тут?" title="Те, що робить спот особливим" tight />
+        <ul class="space-y-3 text-ink-soft">
+          {[
+            'Великі акваторії рівної води — комфортно і для початківців, і для прогресу.',
+            'Стабільні термічні вітри, що читаються заздалегідь через локальну метеостанцію.',
+            'Школа з інструкторами рівня IKO/VDWS — навчання за зрозумілою програмою.',
+            'Обладнання поруч: кайти, борди, wingfoil, SUP — без необхідності тягати своє.',
+            'Доступ до інфраструктури клубу: душі, туалети, кафе, паркінг.',
+          ].map((b) => (
+            <li class="flex items-start gap-3"><span class="mt-2 h-2 w-2 rounded-full bg-coral-500"/><span>{b}</span></li>
+          ))}
+        </ul>
+      </div>
+      <div class="rounded-3xl overflow-hidden aspect-[4/5] shadow-card">
+        <Image src={kiteHero} alt="Кайтсерфер на Тилігульському лимані" widths={[480, 720, 1080]} sizes="(min-width: 1024px) 560px, 90vw" class="w-full h-full object-cover" loading="lazy" />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

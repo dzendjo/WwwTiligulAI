@@ -1,0 +1,21 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Сторінку не знайдено · Tiligul Club"
+  description="Цієї сторінки не існує. Поверніться на головну або відкрийте розділи сайту."
+  path="/404"
+  noindex
+>
+  <section class="container-x py-24 text-center">
+    <p class="eyebrow justify-center">404</p>
+    <h1 class="font-display text-4xl sm:text-5xl text-ink mt-3">Тут пусто — як на косі в листопаді</h1>
+    <p class="mt-4 text-ink-muted max-w-prose mx-auto">Цієї сторінки немає. Спробуйте з головної або одного з основних розділів.</p>
+    <div class="mt-7 flex flex-wrap justify-center gap-3">
+      <a href="/" class="btn-primary">На головну</a>
+      <a href="/beach" class="btn-secondary">Пляж</a>
+      <a href="/camping" class="btn-secondary">Глемпінг</a>
+      <a href="/kite" class="btn-secondary">Кайт</a>
+    </div>
+  </section>
+</BaseLayout>

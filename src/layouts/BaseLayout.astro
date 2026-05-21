@@ -1,0 +1,104 @@
+---
+import '@/styles/global.css';
+import Header from '@components/Header.astro';
+import Footer from '@components/Footer.astro';
+import MobileStickyCTA from '@components/MobileStickyCTA.astro';
+import SEO from '@components/SEO.astro';
+import { site } from '@data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Path used for canonical URL — current page path, leading slash. */
+  path: string;
+  ogImage?: string;
+  noindex?: boolean;
+  /** JSON-LD pieces specific to this page. LocalBusiness is injected automatically. */
+  jsonLd?: Record<string, unknown>[];
+  /** Set false to suppress sticky CTA (e.g. on /contacts where CTA is already huge). */
+  showStickyCta?: boolean;
+}
+const {
+  title,
+  description,
+  path,
+  ogImage,
+  noindex = false,
+  jsonLd = [],
+  showStickyCta = true,
+} = Astro.props;
+
+// Always-on Resort schema with stable @id (shared via reference across pages).
+const localBusiness = {
+  '@context': 'https://schema.org',
+  '@type': 'Resort',
+  '@id': site.url + '/#business',
+  name: site.name,
+  description: site.longDescription,
+  url: site.url,
+  image: new URL('/images/og/default.jpg', site.url).toString(),
+  telephone: '+380935050800',
+  priceRange: '$$',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: site.address.locality,
+    addressRegion: site.address.region,
+    addressCountry: 'UA',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: site.geo.latitude,
+    longitude: site.geo.longitude,
+  },
+  amenityFeature: [
+    { '@type': 'LocationFeatureSpecification', name: 'Пляж', value: true },
+    { '@type': 'LocationFeatureSpecification', name: 'Глемпінг', value: true },
+    { '@type': 'LocationFeatureSpecification', name: 'Кайт-школа', value: true },
+    { '@type': 'LocationFeatureSpecification', name: 'Ресторан і бар', value: true },
+    { '@type': 'LocationFeatureSpecification', name: 'Паркінг', value: true },
+    { '@type': 'LocationFeatureSpecification', name: 'Душі і туалети', value: true },
+  ],
+  sameAs: [
+    'https://www.instagram.com/tiligul.club/',
+    'https://www.facebook.com/tiligul.club',
+  ],
+};
+---
+<!doctype html>
+<html lang={site.language}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#F2E6D0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <!-- Self-hosted fonts: woff2 served from /fonts/. Preload the body font's latin file (LCP path). -->
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/dm-sans-500-latin.woff2" crossorigin />
+    <SEO
+      title={title}
+      description={description}
+      path={path}
+      ogImage={ogImage}
+      noindex={noindex}
+      jsonLd={[localBusiness, ...jsonLd]}
+    />
+    <slot name="head" />
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:bg-coral-500 focus:text-white focus:px-4 focus:py-2 focus:rounded-full">
+      Перейти до основного контенту
+    </a>
+    <Header />
+    <main id="main" class="flex-1 pb-24 lg:pb-0">
+      <slot />
+    </main>
+    <Footer />
+    {showStickyCta && <MobileStickyCTA />}
+
+    <script>
+      import '@/scripts/analytics';
+    </script>
+  </body>
+</html>
