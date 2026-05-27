@@ -40,8 +40,8 @@ const faqJsonLd = {
 };
 ---
 <BaseLayout
-  title="Пляж Tiligul Club — шезлонги, перголи, лаунж-зірки на Тилігульському лимані"
-  description="Шезлонги під навісом, шезлонги з парасолею, перголи на компанію, лаунж-зірки до 6 осіб. Душі, туалети, опріснювальна зона, бар і кафе на пляжі."
+  title="Пляж Tiligul Club — шезлонги, перголи, павільйон-зірки на Тилігульському лимані"
+  description="Шезлонги під навісом, шезлонги під зонтами, перголи на компанію, павільйон-зірки до 6 осіб. Душі, туалети, опріснювальна зона, бар і кафе на пляжі."
   path="/beach"
   ogImage="/images/og/beach.jpg"
   jsonLd={[breadcrumbJson, faqJsonLd]}
@@ -52,14 +52,14 @@ const faqJsonLd = {
     <div class="container-x grid lg:grid-cols-2 gap-12 items-center">
       <div>
         <span class="eyebrow">Пляж</span>
-        <h1 class="font-display text-4xl sm:text-5xl text-ink mt-3">Шезлонги, перголи і лаунж-зірки на косі лиману</h1>
+        <h1 class="font-display text-4xl sm:text-5xl text-ink mt-3">Шезлонги, перголи і павільйон-зірки на косі лиману</h1>
         <p class="mt-5 text-ink-muted leading-relaxed">
           Пляжний майданчик Tiligul Club — це чотири типи позицій від простого шезлонга до
-          лаунж-зірки на велику компанію, плюс усе необхідне для дня на воді: душі, туалети,
+          павільйон-зірки на велику компанію, плюс усе необхідне для дня на воді: душі, туалети,
           бар, опріснювальна зона, туалети та літній душ.
         </p>
         <div class="mt-7 flex flex-wrap gap-3">
-          <a href={`tel:${beach.tel}`} class="btn-primary" data-analytics="click_book_beach">Забронювати: {beach.display}</a>
+          <a href={beach.bookingUrl!} target="_blank" rel="noopener" class="btn-primary" data-analytics="click_book_beach">Забронювати пляж онлайн</a>
           <a href="/prices" class="btn-secondary">Ціни</a>
         </div>
       </div>

@@ -18,7 +18,8 @@ export const phones: ContactChannel[] = [
     label: 'Пляж та лаунжі',
     display: '+38 (093) 50-50-800',
     tel: '+380935050800',
-    note: 'Бронювання шезлонгів, пергол, лаунж-зірок',
+    bookingUrl: 'https://tiligul.event.net.ua',
+    note: 'Бронювання шезлонгів, пергол, павільйон-зірок',
   },
   {
     id: 'glamping',

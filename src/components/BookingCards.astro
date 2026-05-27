@@ -50,7 +50,7 @@ const imageById: Record<string, ImageMetadata> = {
         )}
         <div class="mt-auto pt-4 sm:pt-5 flex items-end justify-between gap-3">
           <span class="font-medium text-teal-700 hidden sm:block">{p.fromPriceLabel}</span>
-          <a href={`tel:${beach.tel}`} class="btn-dark text-sm w-full sm:w-auto" data-analytics="click_book_beach">
+          <a href={beach.bookingUrl!} target="_blank" rel="noopener" class="btn-dark text-sm w-full sm:w-auto" data-analytics="click_book_beach">
             Забронювати
           </a>
         </div>

@@ -22,7 +22,7 @@ const breadcrumbJson = {
 ---
 <BaseLayout
   title="Ціни Tiligul Club — пляж, глемпінг, кайт-школа, прокат"
-  description="Прозорі ціни на шезлонги, перголи, лаунж-зірки, глемпи Junior / Safari / Comet та послуги кайт-школи. Розбивка по сезонах і днях тижня."
+  description="Прозорі ціни на шезлонги, перголи, павільйон-зірки, глемпи Junior / Safari / Comet та послуги кайт-школи. Розбивка по сезонах і днях тижня."
   path="/prices"
   ogImage="/images/og/prices.jpg"
   jsonLd={[breadcrumbJson]}
@@ -44,8 +44,8 @@ const breadcrumbJson = {
     <h2 class="font-display text-2xl text-ink mb-4">Пляж</h2>
     <PriceTable />
     <div class="mt-5 sm:mt-6">
-      <a href={`tel:${beach.tel}`} class="btn-primary" data-analytics="click_book_beach">
-        Забронювати пляж: {beach.display}
+      <a href={beach.bookingUrl!} target="_blank" rel="noopener" class="btn-primary" data-analytics="click_book_beach">
+        Забронювати пляж онлайн
       </a>
     </div>
   </section>

@@ -152,7 +152,9 @@ const features = [
 
             <div class="animate-fade-up [animation-delay:280ms]">
                 <a
-                    href={`tel:${beach.tel}`}
+                    href={beach.bookingUrl!}
+                    target="_blank"
+                    rel="noopener"
                     class="btn-primary gap-3 group"
                     data-analytics="click_book_beach"
                 >
